@@ -46,7 +46,8 @@
     "test": "snyk test",
     "watch": "nodemon index.js",
     "standard": "standard --verbose | snazzy",
-    "cleanmac": "find . -name '.DS_Store' -type f -delete"
+    "cleanmac": "find . -name '.DS_Store' -type f -delete",
+    "webpack-dev": "webpack --watch --config scripts/webpack.dev.js"
   },
   "devDependencies": {
     "@fortawesome/fontawesome": "^1.1.3",
