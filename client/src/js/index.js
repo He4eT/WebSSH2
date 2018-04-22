@@ -2,22 +2,10 @@
 
 import * as io from 'socket.io-client'
 import * as Terminal from 'xterm/dist/xterm'
-import * as fit from 'xterm/dist/addons/fit/fit'
-// fontawesome, individual icon imports reduces file size dramatically but it's
-// a little messy. this should be fixed by some updates with the fa library at some point
-import fontawesome from '@fortawesome/fontawesome'
-import faBars from '@fortawesome/fontawesome-free-solid/faBars'
-// import faQuestion from '@fortawesome/fontawesome-free-solid/faQuestion'
-import faClipboard from '@fortawesome/fontawesome-free-solid/faClipboard'
-import faDownload from '@fortawesome/fontawesome-free-solid/faDownload'
-import faKey from '@fortawesome/fontawesome-free-solid/faKey'
-import faCog from '@fortawesome/fontawesome-free-solid/faCog'
-fontawesome.library.add(faBars, faClipboard, faDownload, faKey, faCog)
 
 require('xterm/dist/xterm.css')
 require('../css/style.css')
 
-Terminal.applyAddon(fit)
 
 /* global Blob, logBtn, credentialsBtn, downloadLogBtn */
 var sessionLogEnable = false
@@ -32,16 +20,11 @@ var header = document.getElementById('header')
 var dropupContent = document.getElementById('dropupContent')
 var footer = document.getElementById('footer')
 var terminalContainer = document.getElementById('terminal-container')
+
 term.open(terminalContainer)
 term.focus()
-term.fit()
-
-window.addEventListener('resize', resizeScreen, false)
-
-function resizeScreen () {
-  term.fit()
-  socket.emit('resize', { cols: term.cols, rows: term.rows })
-}
+term.setOption('cols', 80)
+term.setOption('rows', 20)
 
 if (document.location.pathname) {
   var parts = document.location.pathname.split('/')
@@ -67,6 +50,7 @@ socket.on('data', function (data) {
 
 socket.on('connect', function () {
   socket.emit('geometry', term.cols, term.rows)
+  socket.emit('resize', { cols: term.cols, rows: term.rows })
 })
 
 socket.on('setTerminalOpts', function (data) {
