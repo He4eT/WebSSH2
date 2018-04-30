@@ -98,5 +98,3 @@ export let startTerminal = function () {
     return false
   }
 }
-
-startTerminal()
